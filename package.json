@@ -13,7 +13,10 @@
     "@react-three/fiber": "^9.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "^0.173.0"
+    "three": "0.146.0"
+  },
+  "resolutions": {
+    "three-mesh-bvh": "0.6.3"
   },
   "devDependencies": {
     "@types/react": "^19.0.10",
