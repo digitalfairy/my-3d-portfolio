@@ -13,9 +13,10 @@ import * as THREE from "three";
 export function Avatar(props) {
 
   const { animation } = props;
-  const { headFollow, cursorFollow } = useControls({
+  const { headFollow, cursorFollow, wireframe } = useControls({
     headFollow: false,
     cursorFollow: false,
+    wireframe: false,
   });
 
   const group = useRef();
@@ -59,7 +60,13 @@ export function Avatar(props) {
       }
     };
   }, [animation, actions]);
-  
+
+  useEffect(() => {
+    Object.values(materials).forEach((material) => {
+      material.wireframe = wireframe;
+    });
+  }, [wireframe]);
+
   return (
   <group {...props} ref={group} dispose={null}>
     <group>
