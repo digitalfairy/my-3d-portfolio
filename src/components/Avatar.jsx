@@ -4,26 +4,62 @@ Command: npx gltfjsx@6.5.3 public/models/68f77804f367100305838e40.glb
 */
 
 import React, { useEffect, useRef } from 'react'
-import { useGraph } from '@react-three/fiber'
+import { useFrame, useGraph } from '@react-three/fiber'
 import { useAnimations, useFBX, useGLTF } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
+import { useControls } from 'leva'
+import * as THREE from "three";
 
 export function Avatar(props) {
+
+  const { animation } = props;
+  const { headFollow, cursorFollow } = useControls({
+    headFollow: false,
+    cursorFollow: false,
+  });
+
   const group = useRef();
   const { scene } = useGLTF('models/68f77804f367100305838e40.glb');
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes, materials } = useGraph(clone);
 
   const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
+  const { animations: standingAnimation } = useFBX("animations/Standing Idle.fbx");
+  const { animations: fallingAnimation } = useFBX("animations/Falling Idle.fbx");
 
   typingAnimation[0].name = "Typing";
+  standingAnimation[0].name = "Standing";
+  fallingAnimation[0].name = "Falling";
 
-  const { actions } = useAnimations(typingAnimation, group);
+  const { actions } = useAnimations(
+    [typingAnimation[0], standingAnimation[0], fallingAnimation[0]],
+    group
+  );
+  
+  useFrame((state) => {
+    if (headFollow) {
+      group.current.getObjectByName("Head").lookAt(state.camera.position);
+    }
+
+    if (cursorFollow) {
+      const target = new THREE.Vector3(state.mouse.x, state.mouse.y, 1);
+      group.current.getObjectByName("Spine2").lookAt(target);
+    }
+  });
 
   useEffect(() => {
-    actions["Typing"].reset().play();
-  }, []);
-
+    const action = actions[animation];
+    if (action) {
+      action.reset().fadeIn(0.5).play();
+    }
+    return () => {
+      
+      if (action) {
+        action.reset().fadeOut(0.5);
+      }
+    };
+  }, [animation, actions]);
+  
   return (
   <group {...props} ref={group} dispose={null}>
     <group>
