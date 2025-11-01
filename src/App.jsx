@@ -3,10 +3,13 @@ import { Experience } from "./components/Experience";
 
 function App() {
   return (
-    <Canvas shadows camera={{ position: [0, 2, 5] }}>
-      <color attach="background" args={["#ececec"]} />
-      <Experience />
-    </Canvas>
+    <>
+      <Canvas shadows camera={{ position: [0, 2, 5] }}>
+        <color attach="background" args={["#ececec"]} />
+        <Experience />
+      </Canvas>
+      <p className="text-green-900 italic border">Hello World!</p>
+     </>
   );
 }
 
