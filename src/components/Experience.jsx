@@ -35,10 +35,7 @@ export const Experience = () => {
 
   return (
     <>
-      <OrbitControls 
-        target={[0, 0.7, 0]} 
-      />
-      
+    
       {/* Existing Environment: Sky and Environment preset */}
       <Sky />
       <Environment preset="sunset" />
