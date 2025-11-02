@@ -1,71 +1,100 @@
 import {
-  ContactShadows,
-  Environment,
-  OrbitControls,
-  Sky,
+  Float,
+  MeshDistortMaterial,
+  MeshWobbleMaterial,
 } from "@react-three/drei";
-import { useControls } from "leva";
+import { useFrame, useThree } from "@react-three/fiber";
+import { animate, useMotionValue } from "framer-motion";
+import { motion } from 'framer-motion';
+import { useEffect } from "react";
+import { framerMotionConfig } from "../config";
 import { Avatar } from "./Avatar";
-import { Office } from "./Office"; 
+import { Office } from "./Office";
 
-export const Experience = () => {
-  const { animation } = useControls({
-    animation: {
-      value: "Typing",
-      options: ["Typing", "Falling", "Standing"],
-    },
-  });
+export const Experience = (props) => {
+  const { section, menuOpened } = props;
+  const { viewport } = useThree();
 
-  const { positionX, positionY, positionZ, rotationY } = useControls({
-    // Fine-tune the horizontal position
-    positionX: { value: -0.2, min: -2, max: 2, step: 0.01, label: "X Position" },
-    // Fine-tune the vertical position (essential for sitting correctly)
-    positionY: { value: 0.4, min: -1, max: 1, step: 0.01, label: "Y Position" }, 
-    // Fine-tune the forward/backward position
-    positionZ: { value: -0.5, min: -2, max: 2, step: 0.01, label: "Z Position" },
-    // Fine-tune rotation offset (starts at 0 since the 180° fix is inside Avatar.jsx)
-    rotationY: {
-     value: Math.PI / 2, 
-      min: -Math.PI * 2,
-      max: Math.PI * 2,
-      step: 0.01,
-      label: "Find Rotation",
-    },
+  const cameraPositionX = useMotionValue();
+  const cameraLookAtX = useMotionValue();
+
+  useEffect(() => {
+    animate(cameraPositionX, menuOpened ? -5 : 0, {
+      ...framerMotionConfig,
+    });
+    animate(cameraLookAtX, menuOpened ? 5 : 0, {
+      ...framerMotionConfig,
+    });
+  }, [menuOpened]);
+  
+  useFrame((state) => {
+    state.camera.position.x = cameraPositionX.get();
+    state.camera.lookAt(cameraLookAtX.get(), 0, 0);
   });
 
   return (
     <>
-    
-      {/* Existing Environment: Sky and Environment preset */}
-      <Sky />
-      <Environment preset="sunset" />
+      <ambientLight intensity={1} />
+      <motion.group
+        position={[1.5, 2, 3]}
+        scale={[0.9, 0.9, 0.9]}
+        rotation-y={-Math.PI / 4}
+        animate={{
+          y: section === 0 ? 0 : -1,
+        }}
+      >
+        <Office section={section} />
+      </motion.group>
 
-      <group position-y={-1}>
-        
-        {/* 1. CONTACT SHADOWS (Kept) */}
-        <ContactShadows
-          opacity={0.42}
-          scale={10}
-          blur={1}
-          far={10}
-          resolution={256}
-          color="#000000"
-        />
-        
-        {/* 2. THE OFFICE MODEL (Replaces the old ground plane) */}
-        <Office 
-          position-y={-0.001} 
-          scale={1.0} 
-          receiveShadow
-        />
-
-        {/* 3. AVATAR AND DESK SETUP */}
-        <Avatar 
-          animation={animation} 
-          position={[positionX, positionY, positionZ]}
-          rotation-y={rotationY}
-        />
-      </group>
+      {/* SKILLS */}
+      <motion.group
+        position={[0, -1.5, -10]}
+        animate={{
+          z: section === 1 ? 0 : -10,
+          y: section === 1 ? -viewport.height : -1.5,
+        }}
+      >
+        <directionalLight position={[-5, 3, 5]} intensity={0.4} />
+        <Float>
+          <mesh position={[1, -3, -15]} scale={[2, 2, 2]}>
+            <sphereGeometry />
+            <MeshDistortMaterial
+              opacity={0.8}
+              transparent
+              distort={0.4}
+              speed={4}
+              color={"red"}
+            />
+          </mesh>
+        </Float>
+        <Float>
+          <mesh scale={[3, 3, 3]} position={[3, 1, -18]}>
+            <sphereGeometry />
+            <MeshDistortMaterial
+              opacity={0.8}
+              transparent
+              distort={1}
+              speed={5}
+              color="yellow"
+            />
+          </mesh>
+        </Float>
+        <Float>
+          <mesh scale={[1.4, 1.4, 1.4]} position={[-3, -1, -11]}>
+            <boxGeometry />
+            <MeshWobbleMaterial
+              opacity={0.8}
+              transparent
+              factor={1}
+              speed={5}
+              color={"blue"}
+            />
+          </mesh>
+        </Float>
+        <group scale={[2, 2, 2]} position-y={-1.5}>
+          <Avatar animation={section === 0 ? "Falling" : "Standing"} />
+        </group>
+      </motion.group>
     </>
   );
 };
