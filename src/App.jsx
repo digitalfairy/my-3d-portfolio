@@ -1,12 +1,18 @@
 import { Scroll, ScrollControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Experience } from "./components/Experience";
 import { Interface } from "./components/Interface";
+import { Menu } from "./components/Menu";
 import { ScrollManager } from "./components/ScrollManager";
 
 function App() {
   const [section, setSection] = useState(0);
+  const [menuOpened, setMenuOpened] = useState(false);
+
+  useEffect(() => {
+    setMenuOpened(false);
+  }, [section]);
   
   return (
     <>
@@ -20,6 +26,11 @@ function App() {
           </Scroll>
         </ScrollControls>
       </Canvas>
+      <Menu 
+        onSectionChange={setSection} 
+        menuOpened={menuOpened} 
+        setMenuOpened={setMenuOpened}
+      />
      </>
   );
 }
