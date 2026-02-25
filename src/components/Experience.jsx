@@ -52,10 +52,31 @@ export const Experience = (props) => {
         animate={"" + section}
         transition={{ duration: 0.6 }}
         variants={{
-          0: { scale: 0.9 },
-          1: { y: -viewport.height + 0.5, x: 0, z: 7, rotateY: 0 },
-          2: { x: -2, y: -viewport.height * 2 + 0.5, z: 0, rotateY: Math.PI / 2 },
-          3: { y: -viewport.height * 3 + 1, x: 0.3, z: 8.5, rotateY: -Math.PI / 4 },
+          0: { 
+            scale: 0.9, 
+            y: 0.40,     
+            x: 1.445, 
+            z: 2.83, 
+            rotateY: 1 
+          },
+          1: { 
+            y: -viewport.height + 1.4, 
+            x: 0.35, 
+            z: 7, 
+            rotateY: Math.PI
+          },
+          2: { 
+            x: -2, 
+            y: -viewport.height * 2 + 0.2, 
+            z: 0, 
+            rotateY: Math.PI / 2 
+          },
+          3: { 
+            y: -viewport.height * 3 + 1.37, 
+            x: 0.22, 
+            z: 8.5, 
+            rotateY: Math.PI 
+          },
         }}
       >
         <Avatar animation={characterAnimation} />
