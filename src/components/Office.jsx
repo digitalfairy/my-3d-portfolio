@@ -1,33 +1,72 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
+import * as THREE from 'three'
 
 export function Office(props) {
   const { nodes, materials } = useGLTF('models/room_scene.glb')
+
+  // 1. Manual Video Element Strategy
+  // This creates a standard HTML5 video tag in memory
+  const [video] = useState(() => {
+    const vid = document.createElement("video");
+    vid.src = "textures/vscode.mp4";
+    vid.crossOrigin = "Anonymous";
+    vid.loop = true;
+    vid.muted = true;
+    vid.playsInline = true;
+    return vid;
+  });
+
+  useEffect(() => {
+    const playVideo = () => video.play().catch(e => console.log("Waiting for interaction"));
+    playVideo();
+    
+    window.addEventListener('pointerdown', playVideo);
+    return () => window.removeEventListener('pointerdown', playVideo);
+  }, [video]);
+
   return (
     <group {...props} dispose={null}>
+
       <mesh geometry={nodes.Floor.geometry} material={materials.M_Floor_LightBrown} position={[-0.178, 0.32, 0.373]} />
+      
       <group position={[-2.138, 1.776, 0.373]}>
         <mesh geometry={nodes.Cube001.geometry} material={materials.M_Wall} />
         <mesh geometry={nodes.Cube001_1.geometry} material={materials.M_Glass} />
         <mesh geometry={nodes.Cube001_2.geometry} material={materials.M_Window} />
         <mesh geometry={nodes.Cube001_3.geometry} material={materials.M_Floor_LightBrown} />
       </group>
+
       <group position={[-0.178, 1.776, -1.586]}>
         <mesh geometry={nodes.Cube003.geometry} material={materials.M_Wall} />
         <mesh geometry={nodes.Cube003_1.geometry} material={materials.M_Floor_LightBrown} />
       </group>
+
       <group position={[-0.07, 0.975, -0.222]}>
         <mesh geometry={nodes.Cylinder011.geometry} material={materials.M_DarkGrey} />
         <mesh geometry={nodes.Cylinder011_1.geometry} material={materials.M_LightGrey1} />
         <mesh geometry={nodes.Cylinder011_2.geometry} material={materials.M_LightGrey2} />
       </group>
+
       <group position={[-0.868, 0.579, -0.958]}>
         <mesh geometry={nodes.Cube010.geometry} material={materials.M_Computer} />
         <mesh geometry={nodes.Cube010_1.geometry} material={materials.M_ComputerButtons} />
       </group>
+
+      {/* --- THE MONITOR SECTION --- */}
+
       <group position={[-0.17, 1.507, -1.13]}>
-        <mesh geometry={nodes.Cube015.geometry} material={materials.M_ScreenBlack} />
         <mesh geometry={nodes.Cube015_1.geometry} material={materials.M_ScreenGrey} />
+        <mesh position={[0, 0.045, 0.1]}>
+          <planeGeometry args={[0.83, 0.45]} />
+          <meshBasicMaterial toneMapped={false} >
+            <videoTexture attach="map" args={[video]} />
+          </meshBasicMaterial>
+        </mesh>
+
+        <mesh geometry={nodes.Cube015.geometry}>
+          <meshBasicMaterial color="black" />
+        </mesh>
       </group>
       <mesh geometry={nodes.MousePad.geometry} material={materials.M_MousePad} position={[0.158, 1.178, -0.725]} scale={0.934} />
       <group position={[0.087, 1.197, -0.727]}>
