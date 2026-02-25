@@ -1,7 +1,7 @@
 import { Float, MeshDistortMaterial, MeshWobbleMaterial, useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion-3d";
 import { useEffect, useRef, useState } from "react";
 import { framerMotionConfig } from "../config";
 import { Avatar } from "./Avatar";
@@ -22,6 +22,8 @@ export const Experience = (props) => {
     animate(cameraPositionX, menuOpened ? -5 : 0, { ...framerMotionConfig });
     animate(cameraLookAtX, menuOpened ? 5 : 0, { ...framerMotionConfig });
   }, [menuOpened]);
+
+  const characterContainerAboutRef = useRef();
 
   const [characterAnimation, setCharacterAnimation] = useState("Typing");
   useEffect(() => {
@@ -69,8 +71,59 @@ export const Experience = (props) => {
         animate={{ y: section === 0 ? 0 : -1 }}
       >
         <Office section={section} />
+        <group
+          ref={characterContainerAboutRef}
+          name="CharacterSpot"
+          position={[0.07, 0.16, -0.57]}
+          rotation={[-Math.PI, 0.42, -Math.PI]}
+        ></group>
       </motion.group>
-
+      {/* SKILLS */}
+      <motion.group
+        position={[0, -1.5, -10]}
+        animate={{
+          z: section === 1 ? 0 : -10,
+          y: section === 1 ? -viewport.height : -1.5,
+        }}
+      >
+        <directionalLight position={[-5, 3, 5]} intensity={0.4} />
+        <Float>
+          <mesh position={[1, -3, -15]} scale={[2, 2, 2]}>
+            <sphereGeometry />
+            <MeshDistortMaterial
+              opacity={0.8}
+              transparent
+              distort={0.4}
+              speed={4}
+              color={"red"}
+            />
+          </mesh>
+        </Float>
+        <Float>
+          <mesh scale={[3, 3, 3]} position={[3, 1, -18]}>
+            <sphereGeometry />
+            <MeshDistortMaterial
+              opacity={0.8}
+              transparent
+              distort={1}
+              speed={5}
+              color="yellow"
+            />
+          </mesh>
+        </Float>
+        <Float>
+          <mesh scale={[1.4, 1.4, 1.4]} position={[-3, -1, -11]}>
+            <boxGeometry />
+            <MeshWobbleMaterial
+              opacity={0.8}
+              transparent
+              factor={1}
+              speed={5}
+              color={"blue"}
+            />
+          </mesh>
+        </Float>
+      </motion.group>
       <Projects />
     </>
   );

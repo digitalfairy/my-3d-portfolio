@@ -54,10 +54,9 @@ export function Office(props) {
       </group>
 
       {/* --- THE MONITOR SECTION --- */}
-
       <group position={[-0.17, 1.507, -1.13]}>
         <mesh geometry={nodes.Cube015_1.geometry} material={materials.M_ScreenGrey} />
-        <mesh position={[0, 0.045, 0.1]}>
+        <mesh position={[0, 0.070, 0.1]}>
           <planeGeometry args={[0.83, 0.45]} />
           <meshBasicMaterial toneMapped={false} >
             <videoTexture attach="map" args={[video]} />
