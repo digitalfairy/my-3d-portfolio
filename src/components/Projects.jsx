@@ -2,7 +2,7 @@ import { Image, Text } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
 
-import { motion } from "framer-motion";
+import { motion } from "framer-motion-3d";
 import { atom, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
@@ -54,7 +54,7 @@ const Project = (props) => {
   });
 
   return (
-    <group {...props}>
+    <group {...props} position={[0, 1, 0]}>
       <mesh
         position-z={-0.001}
         onClick={() => window.open(project.url, "_blank")}
