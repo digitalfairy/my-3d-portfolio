@@ -6,11 +6,10 @@ import { useControls } from 'leva'
 import * as THREE from "three";
 
 export function Avatar(props) {
-  const { animation } = props;
-  const { headFollow, cursorFollow, wireframe } = useControls({
+  const { animation, wireframe } = props;
+  const { headFollow, cursorFollow } = useControls({
     headFollow: false,
     cursorFollow: false,
-    wireframe: false,
   });
 
   const group = useRef();
@@ -42,20 +41,25 @@ export function Avatar(props) {
   });
 
   useEffect(() => {
-    const action = actions[animation];
-    if (action) {
-      action.reset().fadeIn(0.5).play();
-    }
-    return () => {
-      if (action) action.fadeOut(0.5);
-    };
+  const action = actions[animation];
+  
+  Object.values(actions).forEach((a) => {
+    // Increase the fade time to make the switch look like a continuous movement
+    if (a !== action) a.fadeOut(0.5); 
+  });
+
+  if (action) {
+    // Use a slightly longer fadeIn for the 'Typing' animation
+    // to blend it smoothly over the tail end of the 'Falling' animation
+    action.reset().fadeIn(0.5).play();
+  }
   }, [animation, actions]);
 
   useEffect(() => {
     Object.values(materials).forEach((material) => {
       material.wireframe = wireframe;
     });
-  }, [wireframe, materials]);
+  }, [wireframe]);
 
   return (
     <group {...props} ref={group} dispose={null}>
@@ -74,3 +78,6 @@ export function Avatar(props) {
 }
 
 useGLTF.preload('models/68f77804f367100305838e40.glb')
+useFBX.preload("animations/Typing.fbx");
+useFBX.preload("animations/Standing Idle.fbx");
+useFBX.preload("animations/Falling Idle.fbx");
