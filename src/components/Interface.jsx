@@ -77,7 +77,7 @@ const skills = [
   { title: "React / Next.js 15", level: 95 },
   { title: "Three.js / R3F", level: 90 },
   { title: "GSAP Animation", level: 85 },
-  { title: "Headless CMS (Prismic)", level: 80 },
+  { title: "Node.js", level: 80 },
   { title: "Tailwind CSS", level: 90 },
   { title: "TypeScript", level: 75 },
 ];
@@ -97,7 +97,7 @@ const SkillsSection = () => {
         
         <div className="grid md:grid-cols-2 gap-8">
           {/* Skills Card */}
-          <div className="bg-slate-900/40 p-8 rounded-3xl border border-indigo-900/30">
+          <div className="bg-slate-900/60 p-8 rounded-3xl border border-indigo-900/30">
             <h3 className="text-2xl font-bold text-blue-400 mb-8">Technical Skills</h3>
             <div className="space-y-6">
               {skills.map((skill, index) => (
@@ -120,7 +120,7 @@ const SkillsSection = () => {
           </div>
 
           {/* Languages Card */}
-          <div className="bg-indigo-950/20 p-8 rounded-3xl border border-indigo-800/30">
+          <div className="bg-indigo-950/70 p-8 rounded-3xl border border-indigo-800/30">
             <h3 className="md:flex md:justify-end text-2xl font-bold text-indigo-300 mb-8">Languages</h3>
             <div className="space-y-6">
               {languages.map((lng, index) => (

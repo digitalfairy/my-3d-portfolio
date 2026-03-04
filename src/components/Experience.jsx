@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { framerMotionConfig } from "../config";
 import { Avatar } from "./Avatar";
-import { Background } from "./Background";
 import { Office } from "./Office";
 import { Projects } from "./Projects";
 
@@ -70,7 +69,6 @@ export const Experience = (props) => {
 
   return (
     <>
-      <Background />
       <motion.group
         ref={characterGroup}
         animate={"" + section}
