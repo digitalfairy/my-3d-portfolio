@@ -55,7 +55,7 @@ const AboutSection = (props) => {
         >
           Turning complex <span className="font-extrabold">3D visions</span> into <br /> high-performance web realities. 
           <span className="block text-indigo-500 font-medium mt-2">
-            Next.js | Three.js | GSAP | Headless CMS
+            Next.js | Three.js | GSAP | TypeScript
           </span>
         </motion.p>
         
