@@ -42,7 +42,7 @@ const AboutSection = (props) => {
           transition={{ duration: 0.8 }}
         >
           CREATIVE <br/>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-900">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-700 to-indigo-900">
             DEVELOPER
           </span>
         </motion.h1>
