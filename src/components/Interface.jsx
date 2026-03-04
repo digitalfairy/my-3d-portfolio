@@ -4,11 +4,11 @@ import { useAtom } from "jotai";
 import { currentProjectAtom, projects } from "./Projects";
 
 const Section = (props) => {
-  const { children, mobileTop } = props;
+  const { children, mobileTop, className } = props;
 
   return (
     <motion.section
-      className={`h-screen w-screen p-8 max-w-screen-2xl mx-auto flex flex-col items-start ${mobileTop ? "justify-start md:justify-center" : "justify-center"}`}
+      className={`h-screen w-screen p-4 md:p-8 max-w-screen-2xl mx-auto flex flex-col ${mobileTop ? "justify-start md:justify-center" : "justify-center"} ${className || "items-center"}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -33,7 +33,7 @@ export const Interface = (props) => {
 const AboutSection = (props) => {
   const { setSection } = props;
   return (
-    <Section mobileTop>
+    <Section mobileTop className="items-start">
       <div className="max-w-2xl">
         <motion.h1 
           className="text-6xl md:text-8xl font-black leading-none tracking-tighter text-white"
