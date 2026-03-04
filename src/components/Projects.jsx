@@ -57,9 +57,22 @@ const Project = (props) => {
     }
   });
 
+  // Handler to open the project URL
+  const openProject = (e) => {
+    e.stopPropagation(); // Prevents clicks from triggering anything behind the card
+    if (project.url) {
+      window.open(project.url, "_blank");
+    }
+  };
+
   return (
-    <group {...props}>
-      {/* 1. Base Layer: Deep Slate Plate (No Offset) */}
+    <group 
+      {...props} 
+      onClick={openProject} 
+      onPointerOver={() => setHovered(true)} 
+      onPointerOut={() => setHovered(false)}
+    >
+      {/* 1. Base Layer */}
       <mesh position={[0, 0, 0]}>
         <planeGeometry args={[2.3, 2.6]} />
         <meshBasicMaterial 
@@ -69,7 +82,7 @@ const Project = (props) => {
         />
       </mesh>
 
-      {/* 2. Highlight Frame: "The Pop" effect (Slightly larger, glowing) */}
+      {/* 2. Highlight Frame */}
       <mesh position={[0, 0, -0.01]}>
         <planeGeometry args={[2.26, 2.66]} />
         <meshBasicMaterial 
@@ -80,15 +93,13 @@ const Project = (props) => {
       </mesh>
  
       <motion.group
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
         whileHover={{ scale: 1.14 }}
         transition={{ duration: 0.3 }}
       >
-      <mesh position={[0, 0.4, 0.04]}>
-        <planeGeometry args={[2.06, 1.25]} />
-        <meshBasicMaterial color="#fffff" transparent opacity={1}/>
-      </mesh>
+        <mesh position={[0, 0.4, 0.04]}>
+          <planeGeometry args={[2.06, 1.25]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={1}/>
+        </mesh>
         <Image
           scale={[2, 1.2, 1]}
           url={project.image}
@@ -98,22 +109,22 @@ const Project = (props) => {
         />
       </motion.group>
 
-      {/* 4. Text Content (Ensuring clear hierarchy and no overlap) */}
+      {/* 4. Text Content */}
       <motion.group
         whileHover={{ scale: 1.06 }} 
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
         <Text
-        maxWidth={3}
-        anchorX="center"
-        anchorY="top"
-        fontSize={0.22}
-        position={[0, -0.3, 0.06]}
-        color="white"
-        letterSpacing={0.07} 
-      >
-        {project.title.toUpperCase()}
-      </Text>
+          maxWidth={3}
+          anchorX="center"
+          anchorY="top"
+          fontSize={0.22}
+          position={[0, -0.3, 0.06]}
+          color="white"
+          letterSpacing={0.07} 
+        >
+          {project.title.toUpperCase()}
+        </Text>
       </motion.group>
 
       <motion.group
@@ -126,11 +137,10 @@ const Project = (props) => {
           anchorY="top"
           fontSize={0.13}
           position={[0, -0.6, 0.06]}
-          // color="#94a3b8" 
           color="white"
           letterSpacing={0.1}
         >
-        {project.description}
+          {project.description}
         </Text>
       </motion.group>
     </group>
