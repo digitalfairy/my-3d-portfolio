@@ -6,11 +6,11 @@ export const Menu = (props) => {
       {/* Menu Trigger Button */}
       <button
         onClick={() => setMenuOpened(!menuOpened)}
-        className="z-50 fixed top-6 right-6 md:top-12 md:right-12 p-3 bg-indigo-950 border-indigo-900/50 w-12 h-12 rounded-xl backdrop-blur-sm flex flex-col justify-center items-center gap-1.5 transition-all hover:bg-slate-800"
+        className="z-50 fixed top-6 right-6 md:top-12 md:right-12 p-3 bg-indigo-950 border-indigo-900/50 w-10 h-10 md:w-12 md:h-12 rounded-xl backdrop-blur-sm flex flex-col justify-center items-center gap-1.5 transition-all hover:bg-slate-800"
       >
-        <div className={`bg-white h-0.5 rounded-full w-6 transition-all ${menuOpened ? "rotate-45 translate-y-2" : ""}`} />
-        <div className={`bg-white h-0.5 rounded-full w-6 transition-all ${menuOpened ? "opacity-0" : ""}`} />
-        <div className={`bg-white h-0.5 rounded-full w-6 transition-all ${menuOpened ? "-rotate-45 -translate-y-2" : ""}`} />
+        <div className={`bg-white h-0.5 rounded-full w-5 md:w-6 transition-all ${menuOpened ? "rotate-45 translate-y-2" : ""}`} />
+        <div className={`bg-white h-0.5 rounded-full w-5 md:w-6 transition-all ${menuOpened ? "opacity-0" : ""}`} />
+        <div className={`bg-white h-0.5 rounded-full w-5 md:w-6 transition-all ${menuOpened ? "-rotate-45 -translate-y-2" : ""}`} />
       </button>
 
       {/* Menu Overlay */}
