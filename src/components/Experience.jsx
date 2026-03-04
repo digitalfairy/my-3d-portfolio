@@ -2,7 +2,7 @@ import { Float, MeshDistortMaterial, MeshWobbleMaterial, useScroll } from "@reac
 import { useFrame, useThree } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
 import { motion } from "framer-motion-3d";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import * as THREE from "three";
 import { framerMotionConfig } from "../config";
 import { Avatar } from "./Avatar";
@@ -14,20 +14,26 @@ export const Experience = (props) => {
   const { viewport } = useThree();
   const data = useScroll();
 
-  const isMobile = window.innerWidth < 768;
-  const isMiddleSize = window.innerWidth >= 768 && window.innerWidth < 1200;
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMiddleSize, setIsMiddleSize] = useState(false);
+
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsMiddleSize(width >= 768 && width < 1200);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const responsiveRatio = viewport.width / 12;
   const officeScaleRatio = Math.max(0.5, Math.min(0.9 * responsiveRatio, 0.9));
 
   const [section, setSection] = useState(0);
   const cameraPositionX = useMotionValue(0);
   const cameraLookAtX = useMotionValue(0);
-
-  useEffect(() => {
-    if (characterGroup.current) {
-      characterGroup.current.position.set(0, 5, 0);
-    }
-  }, []); 
 
   useEffect(() => {
     animate(cameraPositionX, menuOpened ? -5 : 0, { ...framerMotionConfig });
@@ -38,7 +44,7 @@ export const Experience = (props) => {
   const characterGroup = useRef();
   const [characterAnimation, setCharacterAnimation] = useState("Typing");
 
- useEffect(() => {
+  useEffect(() => {
     setCharacterAnimation("Falling");
     setTimeout(() => {
       setCharacterAnimation(section === 0 ? "Typing" : "Standing");
@@ -74,9 +80,9 @@ export const Experience = (props) => {
         animate={"" + section}
         transition={{ duration: 0.6 }}
         variants={{
-         0: { scale: officeScaleRatio },
+          0: { scale: officeScaleRatio },
           1: {
-            y: -viewport.height + 1.4, x: isMobile ? 0.35 : isMiddleSize  ? 0 : 1.35, z: 7,
+            y: -viewport.height + 1.4, x: isMobile ? 0.35 : isMiddleSize ? 0 : 1.35, z: 7,
             rotateY: isMobile ? 0 : isMiddleSize ? 0 : -0.2, rotateX: 0, rotateZ: 0, scale: isMobile ? 1 : 0.9
           },
           2: {
@@ -90,19 +96,28 @@ export const Experience = (props) => {
           },
         }}
       >
-      <Avatar animation={characterAnimation} wireframe={section === 1} />
+        <Avatar animation={characterAnimation} wireframe={section === 1} />
       </motion.group>
+
       <ambientLight intensity={1} />
+      
       <motion.group
-        position={[isMobile ? 0 : 1.5, isMobile ? -viewport.height / 6 : 0, 3]}
+        position={[
+          isMobile ? 0 : 1.5, 
+          isMobile ? -0.5 : 0, 
+          3
+        ]}
         scale={[officeScaleRatio, officeScaleRatio, officeScaleRatio]}
         rotation-y={-Math.PI / 4}
-        animate={{ y: isMobile ? -viewport.height / 6 : 0 }}
+        animate={{ 
+          y: isMobile ? -0.5 : 0 
+        }}
         transition={{ duration: 0.8 }}
       >
         <Office section={section} />
         <group ref={characterContainerAboutRef} name="CharacterSpot" position={[0.07, 0.16, -0.57]} rotation={[-Math.PI, 0.42, -Math.PI]} />
       </motion.group>
+
       <motion.group
         position={[0, -10, -10]}
         animate={{
@@ -132,7 +147,7 @@ export const Experience = (props) => {
               </mesh>
             </Float>
           </>
-          )}
+        )}
       </motion.group>
       <Projects />
     </>

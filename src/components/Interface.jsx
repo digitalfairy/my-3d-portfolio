@@ -90,8 +90,8 @@ const languages = [
 const SkillsSection = () => {
   return (
     <Section>
-      <div className="w-full max-w-5xl">
-        <h2 className="text-3xl md:text-5xl font-black text-white mb-2 uppercase tracking-widest text-center">
+      <div className="w-full max-w-5xl md:mb-70">
+        <h2 className="text-3xl md:text-5xl font-black text-white mt-8 md:mb-25 uppercase tracking-widest text-center">
           Tech Arsenal
         </h2>
         

@@ -5,8 +5,6 @@ import * as THREE from 'three'
 export function Office(props) {
   const { nodes, materials } = useGLTF('models/room_scene.glb')
 
-  // 1. Manual Video Element Strategy
-  // This creates a standard HTML5 video tag in memory
   const [video] = useState(() => {
     const vid = document.createElement("video");
     vid.src = "textures/vscode.mp4";
@@ -18,7 +16,7 @@ export function Office(props) {
   });
 
   useEffect(() => {
-    const playVideo = () => video.play().catch(e => console.log("Waiting for interaction"));
+    const playVideo = () => video.play().catch(e => console.log("Waiting for user interaction"));
     playVideo();
     
     window.addEventListener('pointerdown', playVideo);
@@ -27,7 +25,6 @@ export function Office(props) {
 
   return (
     <group {...props} dispose={null}>
-
       <mesh geometry={nodes.Floor.geometry} material={materials.M_Floor_LightBrown} position={[-0.178, 0.32, 0.373]} />
       
       <group position={[-2.138, 1.776, 0.373]}>
@@ -53,7 +50,6 @@ export function Office(props) {
         <mesh geometry={nodes.Cube010_1.geometry} material={materials.M_ComputerButtons} />
       </group>
 
-      {/* --- THE MONITOR SECTION --- */}
       <group position={[-0.17, 1.507, -1.13]}>
         <mesh geometry={nodes.Cube015_1.geometry} material={materials.M_ScreenGrey} />
         <mesh position={[0, 0.070, 0.1]}>
@@ -62,24 +58,28 @@ export function Office(props) {
             <videoTexture attach="map" args={[video]} />
           </meshBasicMaterial>
         </mesh>
-
         <mesh geometry={nodes.Cube015.geometry}>
           <meshBasicMaterial color="black" />
         </mesh>
       </group>
+      
       <mesh geometry={nodes.MousePad.geometry} material={materials.M_MousePad} position={[0.158, 1.178, -0.725]} scale={0.934} />
       <group position={[0.087, 1.197, -0.727]}>
         <mesh geometry={nodes.Cube018.geometry} material={materials.M_MouseGrey} />
         <mesh geometry={nodes.Cube018_1.geometry} material={materials.M_MouseBlack} />
       </group>
+      
       <mesh geometry={nodes.Cable1.geometry} material={materials.M_Cable} position={[-0.483, 0.969, -1.076]} />
       <mesh geometry={nodes.Cable2.geometry} material={materials.M_Cable} position={[-0.654, 1.067, -1.261]} />
+      
       <group position={[-0.33, 1.193, -0.736]} scale={0.909}>
         <mesh geometry={nodes.Cube020.geometry} material={materials.M_Keyboard} />
         <mesh geometry={nodes.Cube020_1.geometry} material={materials.M_KeyboardButton} />
       </group>
+      
       <mesh geometry={nodes.Cable3.geometry} material={materials.M_Cable} position={[-0.682, 0.955, -1.124]} />
       <mesh geometry={nodes.Shelf.geometry} material={materials.M_ShelfBrown} position={[-0.124, 1.858, -1.406]} />
+      
       <group position={[-0.826, 2.078, -1.431]}>
         <mesh geometry={nodes.Cube026.geometry} material={materials.M_Book_Red} />
         <mesh geometry={nodes.Cube026_1.geometry} material={materials.M_Book_Paper} />
@@ -112,6 +112,7 @@ export function Office(props) {
         <mesh geometry={nodes.Cube035_1.geometry} material={materials.M_CoverBlack} />
         <mesh geometry={nodes.Cube035_2.geometry} material={materials.M_Paper} />
       </group>
+      
       <mesh geometry={nodes.PencilPot.geometry} material={materials.M_PencilPot} position={[0.649, 1.243, -1.124]} />
       <group position={[0.623, 1.279, -1.128]}>
         <mesh geometry={nodes.Cylinder002.geometry} material={materials.M_Pencil_Yellow} />
